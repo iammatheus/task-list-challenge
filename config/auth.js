@@ -7,12 +7,12 @@ require('../models/Usuario')
 const Usuario = mongoose.model('usuarios')
 
 
-module.exports = function(passport) {
-  passport.use(
-    new localStrategy({ usernameField: 'userName', passwordField: 'password'}, 
+module.exports = async function(passport) {
+  await passport.use(
+   new localStrategy({ usernameField: 'userName', passwordField: 'password'},
     (userName, password, done) => {
       Usuario.findOne({ userName })
-      .then((usuario) => {
+      .then((usuario)=> {
         if(!usuario){
           return done(null, false, { message: 'Conta inexistente!' })
         }
@@ -25,6 +25,8 @@ module.exports = function(passport) {
           }
         })
         
+      }).catch(err => {
+        console.log('Erro ao logar ' + err);
       })
   }))
 
