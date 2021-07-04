@@ -64,5 +64,5 @@ app.use('/', admin)
 app.use('/usuarios', usuarios)
 
 // OTHERS
-const PORT = process.env.PORT || 3002
+const PORT = process.env.PORT || 8080
 app.listen(PORT) 
