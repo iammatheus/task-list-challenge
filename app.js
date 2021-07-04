@@ -38,13 +38,18 @@ app.use((req, res, next) => {
 })
 
 // CONFIGURATION - Mongoose
-mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGO_URL)
-.then(() => {
-   console.log("Conectado ao banco")
-}).catch((err) => {
-   console.log("Erro conexão banco: " + err)
-})
+try{
+   mongoose.Promise = global.Promise;
+   mongoose.connect(process.env.MONGO_URL)
+   .then(() => {
+      console.log("Conectado ao banco")
+   }).catch(err => {
+      console.log("Erro conexão banco: " + err)
+   })
+}catch(err){
+   console.log('Houve um erro ao conectar-se ao banco ' + err);
+}
+
 
 /* body-parser */
 app.use(express.urlencoded({ extended: true }))
