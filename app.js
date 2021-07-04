@@ -38,27 +38,33 @@ app.use((req, res, next) => {
 })
 
 // CONFIGURATION - Mongoose
-mongoose.Promise = global.Promise
+mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGO_URL)
-.then(() =>{
-   console.log('Conectado ao mongo');
+.then(() => {
+   console.log("Conectado ao banco")
 }).catch((err) => {
-   console.log('Erro ao se conectar: ' + err)
+   console.log("Erro conexão banco: " + err)
 })
 
 /* body-parser */
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
-//cors
-app.use(cors())
-
 /* handlebars */
-app.engine('handlebars', handlebars({defaultLayout: 'main'}))
+app.engine('handlebars', handlebars({
+   defaultLayout: 'main',
+   runtimeOptions: {
+      allowProtoPropertiesByDefault: true,
+      allowProtoMethodsByDefault: true,
+  },
+}))
 app.set('view engine', 'handlebars')
 
 // PUBLIC
 app.use(express.static(path.join(__dirname, 'public')))
+
+//cors
+app.use(cors())
 
 // ROUTES
 app.use('/', admin)
@@ -66,4 +72,4 @@ app.use('/usuarios', usuarios)
 
 // OTHERS
 const PORT = process.env.PORT || 8080
-app.listen(PORT) 
+app.listen(PORT)
