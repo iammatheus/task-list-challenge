@@ -1,0 +1,47 @@
+<h2>Lista de tarefas: </h2>
+<hr>
+<a href="task/add"><button class="btn btn-success">Cadastrar tarefa</button></a>
+{{#each tasks}}
+   <div class="card mt-4 {{status}}">
+      <div class="card-body">
+         <div class="status">
+            {{#if status}} 
+               <small class="{{status}}">Concluída</small>
+            {{else}}
+               <small class="{{status}}">Pendente</small>
+            {{/if}}
+         </div>
+        
+
+         <h4>{{ taskName }}</h4>
+         <medium>Detalhes: {{ description }}</medium>
+         <br>
+         <medium>Data de criação: {{ date }}</medium><br>
+
+         {{#if status}}
+            <medium>Data de conclusão: {{ concludedDate }}</medium>
+            <br>
+         {{/if}}
+         <div class="d-flex mt-3">
+            <a href="/task/edit/{{ _id }}">
+               <button class="btn btn-success">Editar</button>   
+            </a>
+            {{#if status}}
+
+            {{else}}
+               <form action="/task/concluded" method="POST">
+                  <input type="hidden" name="id" value="{{ _id }}">
+                  <button type="submit" class="btn btn-success ms-2">Concluir</button>
+               </form>
+            {{/if}}
+            
+            <form action="/task/delete" method="POST">
+               <input type="hidden" name="id" value="{{ _id }}">
+               <button type="submit" class="btn btn-danger ms-2">Deletar</button>
+            </form>
+         </div>
+      </div>
+   </div>
+{{else}}
+   <h4 class="mt-4">Nenhuma tarefa registrada!</h4>
+{{/each}}
