@@ -10,8 +10,8 @@ const Usuario = mongoose.model('usuarios')
 module.exports = async function(passport) {
   await passport.use(
    new localStrategy({ usernameField: 'userName', passwordField: 'password'},
-    (userName, password, done) => {
-      Usuario.findOne({ userName })
+    async (userName, password, done) => {
+     await Usuario.findOne({ userName })
       .then((usuario)=> {
         if(!usuario){
           return done(null, false, { message: 'Conta inexistente!' })
@@ -21,7 +21,7 @@ module.exports = async function(passport) {
           if(batem){
             return done(null, usuario)
           }else{
-            return done(null, false, { message: 'Senha incorreta!' })
+            return done(null, false, { message: 'Senha incorreta!' + error })
           }
         })
         
