@@ -49,6 +49,9 @@ mongoose.connect(process.env.MONGO_URL)
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
+//cors
+app.use(cors())
+
 /* handlebars */
 app.engine('handlebars', handlebars({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
