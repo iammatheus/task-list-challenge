@@ -14,14 +14,14 @@ module.exports = async function(passport) {
      await Usuario.findOne({ userName })
       .then((usuario)=> {
         if(!usuario){
-          return done(null, false, { message: 'Conta inexistente!' })
+          return done(null, false, { message: 'Usuário não cadastrado!' })
         }
 
         bcrypt.compare(password, usuario.password, (error, batem) => {
           if(batem){
             return done(null, usuario)
           }else{
-            return done(null, false, { message: 'Senha incorreta!' + error })
+            return done(null, false, { message: 'Erro ao efetuar login!'})
           }
         })
         
