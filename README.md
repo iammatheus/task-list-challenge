@@ -18,8 +18,6 @@ Desafio feito para um processo seletivo, onde o objetivo era desenvolver uma apl
     - Título da tarefa – com validação de no mínimo 5 caractere e no máximo 30;
     - Status da tarefa – boolean para “Concluído” e “Pendente”;
 
-<br>
-
 ## Credenciais
 Além dos requisitos propostos acima, a aplicação também conta com um sistema de login e você pode testar utilizando as seguintes credenciais:
 - Login: admin
