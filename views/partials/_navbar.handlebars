@@ -3,10 +3,13 @@
     <ul class="navbar-nav">
       {{#if user}}
         <li class="nav-item">
-          <a class="nav-link" href="/tasks">Tarefas</a>
+          <a class="nav-link" href="/tasks" title="Visualizar Tarefas">Tarefas</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/usuarios/logout">Sair</a>
+          <a class="nav-link" href="task/add" title="Cadastrar tarefa">Cadastrar tarefa</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/usuarios/logout" title="Sair">Sair</a>
         </li>
       {{else}}
         <li class="nav-item">

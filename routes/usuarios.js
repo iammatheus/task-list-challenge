@@ -21,9 +21,10 @@ router.get('/logout', (req, res) => {
     req.flash('successMsg', 'Deslogado com sucesso!')
     res.redirect('/')
   }catch(err){
+    req.flash('errorMsg', 'Erro ao deslogar!')
+    res.redirect('/')
     console.log('Erro ao deslogar: ' + err);
   }
-  
 })
 
 module.exports = router

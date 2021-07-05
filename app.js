@@ -9,14 +9,13 @@ const usuarios = require('./routes/usuarios')
 const path = require('path')
 const mongoose = require('mongoose')
 const cors = require('cors')
-
 const session = require('express-session')
 const flash = require('connect-flash')
 
 const passport = require('passport')
 require('./config/auth')(passport)
 
-//Sessão
+//Section
 app.use(session({
    secret: "tasklist",
    resave: true,
@@ -38,7 +37,7 @@ app.use((req, res, next) => {
    next()
 })
 
-// CONFIGURATION - Mongoose
+// Mongoose
 try{
    mongoose.Promise = global.Promise;
    mongoose.connect(process.env.MONGO_URL)
@@ -52,16 +51,16 @@ try{
 }
 
 
-/* body-parser */
+// body-parser 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
-/* handlebars */
+// handlebars
 app.engine('handlebars', handlebars({
    defaultLayout: 'main',
    runtimeOptions: {
       allowProtoPropertiesByDefault: true,
-      allowProtoMethodsByDefault: true,
+      allowProtoMethodsByDefault: true
   },
 }))
 app.set('view engine', 'handlebars')

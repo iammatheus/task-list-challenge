@@ -10726,7 +10726,7 @@ textarea.form-control-lg {
   background-color: #d1e7dd;
 }
 .false{
-  background-color: #fffaa6;
+  background-color: #fcf9bf;
 }
 
 .status{
@@ -10744,4 +10744,17 @@ small.false{
 }
 small.true{
   background-color: #198754;
+}
+
+.fa-edit, 
+.fa-check-circle,
+.fa-trash-alt{
+  font-size: 20px;
+  padding: 7px;
+  border-radius: 4px;
+}
+.btnEditCheckDelete{
+  background-color: transparent;
+  border: none;
+  outline: none;
 }

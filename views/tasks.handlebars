@@ -1,6 +1,6 @@
 <h2>Lista de tarefas: </h2>
 <hr>
-<a href="task/add"><button class="btn btn-success">Cadastrar tarefa</button></a>
+
 {{#each tasks}}
    <div class="card mt-4 {{status}}">
       <div class="card-body">
@@ -11,37 +11,33 @@
                <small class="{{status}}">Pendente</small>
             {{/if}}
          </div>
-        
 
          <h4>{{ taskName }}</h4>
-         <medium>Detalhes: {{ description }}</medium>
-         <br>
-         <medium>Data de criação: {{ date }}</medium><br>
-
-         {{#if status}}
-            <medium>Data de conclusão: {{ concludedDate }}</medium>
+         {{#if description}}
+            <medium>Observação: {{ description }}</medium>
             <br>
          {{/if}}
-         <div class="d-flex mt-3">
+
+         <div class="d-flex mt-3 justify-content-end">
             <a href="/task/edit/{{ _id }}">
-               <button class="btn btn-success">Editar</button>   
+               <button class="btnEditCheckDelete" title="Editar"><i class="far fa-edit btn-warning"></i></button>
             </a>
             {{#if status}}
 
             {{else}}
                <form action="/task/concluded" method="POST">
                   <input type="hidden" name="id" value="{{ _id }}">
-                  <button type="submit" class="btn btn-success ms-2">Concluir</button>
+                  <button type="submit" class="btnEditCheckDelete" title="Concluir"><i class="far fa-check-circle btn-success"></i></button> 
                </form>
             {{/if}}
             
             <form action="/task/delete" method="POST">
                <input type="hidden" name="id" value="{{ _id }}">
-               <button type="submit" class="btn btn-danger ms-2">Deletar</button>
+               <button type="submit" class="btnEditCheckDelete" title="Excluir"><i class="far fa-trash-alt btn-danger"></i></button>
             </form>
          </div>
       </div>
    </div>
 {{else}}
-   <h4 class="mt-4">Nenhuma tarefa registrada!</h4>
+   <h4 class="mt-4">Nenhuma tarefa!</h4>
 {{/each}}

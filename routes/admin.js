@@ -4,6 +4,8 @@ const mongoose = require("mongoose")
 
 const { isUser } = require('../helpers/isUser')
 
+const warningNameTask = "O nome da tarefa deve conter no mínimo 5 caractere e máximo 30."
+
 //model tarefa
 require("../models/Tasks")
 const Task = mongoose.model("task")
@@ -16,7 +18,8 @@ router.get('/', (req, res) => {
 router.get('/tasks', isUser, (req, res) => {
    Task.find()
    .lean()
-   .sort({date: 'desc'})
+   .sort({status: 'asc'})
+   .sort({taskName: 'asc'})
    .then((tasks) => {
       res.render("tasks", { tasks })
    }).catch((err) => {
@@ -27,36 +30,31 @@ router.get('/tasks', isUser, (req, res) => {
 router.get('/task/add', isUser, (req, res) => {
    res.render("addtask")
 })
-
 //Adicionar nova tarefa
 router.post('/task/new', isUser, (req, res) => {
    const erros = []
-
    const { taskName, description } = req.body
 
    if(!taskName || typeof taskName == undefined || taskName == null){
       erros.push({
-         texto: "Nome inválido!" //inserindo msg dentro do array erros.
+         texto: "Nome inválido! Insira um nome para a tarefa."
+      })
+   }else if(taskName.length < 5 || taskName.length > 30) {
+      erros.push({
+         texto: warningNameTask
       })
    }
 
-   if(!description || typeof description == undefined || description == null){
-      erros.push({
-         texto: "Descrição inválida!"  //inserindo msg dentro do array erros.
-      })
-   }
-   
    if(erros.length > 0){
-      res.render("addtask", {erros}) //se existir algum erro, renderiza a página junto com a msg
+      res.render("addtask", {erros})
    }else{ 
       const novaTask = { 
-         taskName: req.body.taskName, //pegando os valores digitados
-         description: req.body.description,
+         taskName,
+         description,
          status: false
-        
       }
    
-      new Task(novaTask) //se não existir erros, crie a tarefa.
+      new Task(novaTask)
       .save()
       .then(() => {
          req.flash("successMsg", "Tarefa criada com sucesso!")
@@ -70,7 +68,7 @@ router.post('/task/new', isUser, (req, res) => {
 
 //Editar tarefa
 router.get("/task/edit/:id", isUser, (req, res) => {
-   Task.findOne({ _id:req.params.id })
+   Task.findOne({ _id: req.params.id })
    .lean()
    .then((task) => {
       res.render("edittask", { task })
@@ -81,24 +79,31 @@ router.get("/task/edit/:id", isUser, (req, res) => {
 })
 
 router.post("/task/edit", isUser, (req, res) => {
-   Task.findOne({ _id: req.body.id })
-   .then((task) => {
-      
-      task.taskName = req.body.taskName
-      task.description = req.body.description
-      task.status = req.body.status
+   const { taskName, status, description, id } = req.body
 
-      task.save().then(() => {
-         req.flash("successMsg", "Tarefa editada com sucesso!")
-         res.redirect("/tasks")
+   Task.findOne({ _id: id })
+   .then((task) => {
+
+      task.taskName = taskName
+      task.description = description
+      task.status = status
+
+      if(taskName.length < 5 || taskName.length > 30){
+         req.flash("errorMsg", warningNameTask)
+         res.redirect(`/task/edit/${id}`)
+      }else{
+         task.save().then(() => {
+            req.flash("successMsg", "Tarefa editada com sucesso!")
+            res.redirect("/tasks")
+         }).catch((err) => {
+            req.flash("errorMsg", "Erro ao editar tarefa!")
+            res.redirect(`/task/edit/${id}`)
+         })
+      }
       }).catch((err) => {
-         req.flash("errorMsg", "Erro ao editar tarefa!")
-         res.redirect("/task/edit")
+         req.flash("errorMsg", "Houve um erro ao editar a tarefa.")
+         res.redirect(`/task/edit/${id}`)
       })
-   }).catch((err) => {
-      req.flash("errorMsg", "Houve um erro ao editar a tarefa.")
-      res.redirect("/task/edit")
-   })
 })
 
 //Deletar tarefa
@@ -117,9 +122,7 @@ router.post("/task/delete", isUser, (req, res) => {
 router.post("/task/concluded", isUser, (req, res) => {
    Task.findOne({ _id: req.body.id })
    .then((task) => {
-      
       task.status = true
-      task.concludedDate = Date.now()
 
       task.save().then(() => {
          req.flash("successMsg", "Tarefa finalizada com sucesso!")

@@ -7,16 +7,7 @@ const Task = new Schema({
       required: true
    },
    description: {
-      type: String,
-      required: true
-   },
-   date: {
-      type: Date,
-      default: Date.now()
-   },
-   concludedDate: {
-      type: Date,
-      default: Date.now()
+      type: String
    },
    status: {
       type: Boolean
