@@ -1,7 +1,7 @@
 # Lista de Tarefas - Desafio
 Desafio feito para um processo seletivo, onde o objetivo era desenvolver uma aplicação de lista de tarefas e suas funcionalidades, utilizando a linguagem de sua preferência.
 
-<img href="public/preview.gif"/>
+<img src="public/preview.gif"/>
 
 <a href="https://task-list-challenge.herokuapp.com/">Visualizar projeto</a>
 
